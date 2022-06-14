@@ -31,9 +31,15 @@ let pokemonList=[
   };
 })();
 
-console.log(pokemonRepository.getAll());
+
 pokemonRepository.add({ name: 'Mew' });
 console.log(pokemonRepository.getAll());
+
+pokemonList.forEach(function(pokemon) {
+  console.log(pokemon.name + pokemon.type + pokemon.height);
+});
+
+
 
 // for (let i=0; i < pokemonList.length; i++){
 //   if (pokemonList[i].height>4){
@@ -42,10 +48,6 @@ console.log(pokemonRepository.getAll());
 //     document.write("<p>" + pokemonList[i].name + pokemonList[i].height + "</p>");
 //   }
 // }
-
-// pokemonList.forEach(function(pokemon) {
-//   console.log(pokemon.name + pokemon.type + pokemon.height);
-// });
 
 // function myLoopFunction(pokemon) {
 //   console.log(pokemon.name + pokemon.type + pokemon.height);
