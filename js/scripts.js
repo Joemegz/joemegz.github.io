@@ -1,4 +1,3 @@
-let pokemonRepository = (function () {
 let pokemonList=[
   {name: 'Mudkip', 
   height: 1.04, 
@@ -21,6 +20,7 @@ let pokemonList=[
   type: ['fire', 'flying']}
 ];
 
+let pokemonRepository = (function () {
   return {
     add: function(pokemon) {
       pokemonList.push(pokemon);
