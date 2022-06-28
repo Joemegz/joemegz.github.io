@@ -2,3 +2,20 @@ body{
   color:black;
   margin: 0;
 }
+
+.button-class{
+  border: 2px;
+  border-color:black;
+  color: white;
+  background-color: rgb(225, 2, 2);
+  border: 3px solid rgb(1, 1, 1);
+  padding: 17px 35px;
+  text-align: center;
+  text-decoration: none;
+  display: inline;
+  font-size: 18px;
+  margin: 10px 6px;
+  -webkit-transition-duration: 0.5s;
+  cursor: pointer;
+}
+
