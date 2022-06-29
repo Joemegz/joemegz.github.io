@@ -48,15 +48,19 @@ function addListItem(pokemon){
   let pokemonList = document.querySelector(".pokemon-list"); //use the . to select a class from the html
   let listpokemon = document.createElement('li'); // created li element
   let button = document.createElement("button"); //created button element or tag, but need to render it in
+  //button.innerText = "placeholder"; //currently placeholder text until text is chosen for the button
   button.innerText = pokemon.name;
   button.classList.add("button-class"); //pulls the css properties from the class "button-class"
   listpokemon.appendChild(button); //appended the button into li
   pokemonList.appendChild(listpokemon); //appended the li into the ul, which is the parent
 
-  button.addEventListener('click', function (event){
-    console.log(pokemon.name);
-  });
 
+// User activates button, button functionality is to show pokemon details
+    button.addEventListener ("click", function(event){
+    console.log(pokemon.name);
+    });
+  
+}
   return {
    add: add,
     getAll: getAll,
@@ -69,3 +73,14 @@ console.log(pokemonRepository.getAll());
 pokemonRepository.getAll().forEach(function(pokemon){
   pokemonRepository.addListItem(pokemon);
 });
+
+
+
+
+// pokemonList.forEach(function(pokemon) {
+//   console.log(pokemon.name + pokemon.type + pokemon.height);
+// });
+
+// for (let i=0; i < pokemonList.length; i++){
+//   if (pokemonList[i].height>4){
+//     document.write("<p>" + pokemonList[i].name + pokemonList[i].height + " Wow that is a big Pokemon!" + "</p>");
