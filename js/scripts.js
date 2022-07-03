@@ -1,38 +1,11 @@
-var pokemonRepository = (function () {
-  let pokemonList = [
-    {
-      name: 'Mudkip', 
-      height: 1.04, 
-      type: ['Water']
-    },
-    {
-      name: 'Charmander', 
-      height: 2.00 , 
-      type: ['Fire']
-    },
-    {  
-      name: 'Mew', 
-      height: 1.04, 
-      type: ['psychic']
-    },
-    {  
-      name: 'Psyduck', 
-      height: 2.07, 
-      type: ['water']
-    },
-    {  
-      name: 'Charizard', 
-      height: 5.07, 
-      type: ['fire', 'flying']
-    }
-];
+let pokemonRepository = (function () {
+  let pokemonList = [];
+  let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
 
 function add(pokemon) {
   if (
-    typeof pokemon === "object" &&
     "name" in pokemon &&
-    "height" in pokemon &&
-    "type" in pokemon
+    "detailsUrl" in pokemon
   ) {
     pokemonList.push(pokemon);
   } else {
@@ -42,7 +15,8 @@ function add(pokemon) {
 //new^
 
 function getAll() {
-  return pokemonList;
+  return pokemonList; 
+  console.log(pokemonList);
 }
 function addListItem(pokemon){
   let pokemonList = document.querySelector(".pokemon-list"); //use the . to select a class from the html
@@ -51,27 +25,67 @@ function addListItem(pokemon){
   //button.innerText = "placeholder"; //currently placeholder text until text is chosen for the button
   button.innerText = pokemon.name;
   button.classList.add("button-class"); //pulls the css properties from the class "button-class"
-  listpokemon.appendChild(button); //appended the button into li
+  listpokemon.appendChild(button); //appended the button into li, nests the button as a child into the li
   pokemonList.appendChild(listpokemon); //appended the li into the ul, which is the parent
-
-
 // User activates button, button functionality is to show pokemon details
     button.addEventListener ("click", function(event){
-    console.log(pokemon.name);
-    });
-  
+    showDetails(pokemon);
+  });
 }
+//this function is the promise function, fetches the apiUrl and the response is converted to json then run a forEach loop for the json result which is the entire api
+  function loadList () {
+    return fetch(apiUrl).then(function (response) {
+      return response.json();
+    }).then(function (json) {
+      json.results.forEach(function (item) {
+        let pokemon = {
+          name: item.name,
+          detailsUrl: item.url
+        };
+        add(pokemon); //already created an add function above on line 5 
+        console.log(pokemon);
+      });
+    }).catch(function (e) {
+      console.error(e);
+    })
+  }
+
+  function loadDetails(item) {
+    let url = item.detailsUrl;
+    return fetch(url).then(function (response) {
+      return response.json();
+    }).then(function (details) {
+      //code below adds the details to the item
+      item.imageUrl = details.sprites.front_default;
+      item.height = details.height;
+      item.types = details.types;
+    }).catch(function (e) {
+      console.error(e);
+    });
+  }
+
+  function showDetails(pokemon) {
+    loadDetails(pokemon).then(function() {
+      console.log(pokemon);
+    });
+  }
+
   return {
    add: add,
     getAll: getAll,
-    addListItem: addListItem
+    addListItem: addListItem,
+    loadList: loadList,
+    loadDetails: loadDetails,
+    showDetails: showDetails
   };
 })();
 
 console.log(pokemonRepository.getAll());
 
-pokemonRepository.getAll().forEach(function(pokemon){
-  pokemonRepository.addListItem(pokemon);
+pokemonRepository.loadList().then(function() {
+  pokemonRepository.getAll().forEach(function (pokemon) {
+    pokemonRepository.addListItem(pokemon);
+  });
 });
 
 
