@@ -38,10 +38,11 @@ let pokemonRepository = (function () {
 
       listItem.appendChild(button); //appended the button into li, nests the button as a child into the li
       pokemonList.appendChild(listItem); //appended the li into the ul, which is the parent
+      listButtonEventlistener(listItem, pokemon); //this calls the function event listener (passing list item and pokemon values as parameters)
     } 
 
     // User activates button, button functionality is to show pokemon details
-    function eventlistener (button, pokemon) {
+    function listButtonEventlistener (button, pokemon) {
       button.addEventListener ("click", function(){
         showDetails(pokemon);
       });
