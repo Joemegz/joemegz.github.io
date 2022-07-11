@@ -4,7 +4,7 @@ let pokemonRepository = (function () {
 
   //this function is the promise function, fetches the apiUrl and the response is converted to json then run a forEach loop for the json result which is the entire api
     function loadList () {
-      return fetch(apiUrl).then(function (response) {
+      return fetch(apiUrl).then(function (response) { 
         return response.json();
       })
       .then(function (json) {
@@ -13,7 +13,7 @@ let pokemonRepository = (function () {
             name: item.name,
             detailsUrl: item.url
           };
-          add(pokemon); 
+          add(pokemon); //adds to the pokemonList 
           console.log(pokemon);
         });
       })
@@ -42,7 +42,7 @@ let pokemonRepository = (function () {
     } 
 
     // User activates button, button functionality is to show pokemon details
-    function listButtonEventlistener (button, pokemon) {
+    function listButtonEventlistener (button, pokemon) { 
       button.addEventListener ("click", function(){
         showDetails(pokemon);
       });
@@ -97,6 +97,7 @@ let pokemonRepository = (function () {
   //   modalBody.append(abilitiesElement);
   // }
 
+  //this is where you export the functions to access them globally
   return {
    add: add,
     getAll: getAll,
@@ -113,9 +114,9 @@ let pokemonRepository = (function () {
 });
 
 //creates a function to show the modal only if it has the 'is-visible' class
-function showModal(title, text) { //enable specifying a title and content for the 'showModal' function
+function showModal(title) { //enable specifying a title and content for the 'showModal' function
   let modalContainer = document.querySelector('#modal-container');
-
+console.log(title)
   //clears all existing modal content
   modalContainer.innerHTML = '';
   let modal = document.createElement('div');
@@ -129,15 +130,40 @@ function showModal(title, text) { //enable specifying a title and content for th
   closeButtonElement.addEventListener('click', hideModal);
 
   let titleElement = document.createElement('h1');
-  titleElement.innerText = title; 
+  titleElement.innerText = title.name; 
 
   let contentElement = document.createElement('p');
-  contentElement.innerText = text;
+  contentElement.innerText += " Height: " + title.height ;
 
+  let abilitiesElement = document.createElement('p');
+  abilitiesElement.innerText += "Abilities: ";
+  
+  for (let i = 0; i<title.abilities.length; i ++) {
+    abilitiesElement.innerText += " " + title.abilities[i].ability.name 
+  }
+
+  let typesElement = document.createElement('p');
+  typesElement.innerText += "Types: ";
+
+  for (let i = 0; i<title.types.length; i ++) {
+    typesElement.innerText += " " + title.types[i].type.name 
+  }
+
+  let weightElement = document.createElement('P');
+  weightElement.innerText += "Weight: " + title.weight;
+
+
+
+  let imgElement = document.createElement('img');
+  imgElement.src = title.imageUrlFront;
 
   modal.appendChild(closeButtonElement);
   modal.appendChild(titleElement);
+  modal.appendChild(imgElement); 
   modal.appendChild(contentElement);
+  modal.appendChild(weightElement);
+  modal.appendChild(abilitiesElement);
+  modal.appendChild(typesElement);
   modalContainer.appendChild(modal);
   
   modalContainer.classList.add('is-visible');
