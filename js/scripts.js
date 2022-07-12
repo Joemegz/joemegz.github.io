@@ -38,7 +38,7 @@ let pokemonRepository = (function () {
 
       listItem.appendChild(button); //appended the button into li, nests the button as a child into the li
       pokemonList.appendChild(listItem); //appended the li into the ul, which is the parent
-      listButtonEventlistener(listItem, pokemon); //this calls the function event listener (passing list item and pokemon values as parameters)
+      listButtonEventlistener(button, pokemon); //this calls the function event listener (passing list item and pokemon values as parameters)
     } 
 
     // User activates button, button functionality is to show pokemon details
@@ -71,31 +71,6 @@ let pokemonRepository = (function () {
       console.error(e);
     });
   }
-  
-  // //modal written in jquery
-  // function showModal (pokemon) {
-  //   let modalBody = $('.modal-body');
-  //   let modalTitle = $('.modal-title');
-
-  //   modalTitle.empty();
-  //   modalBody.empty();
-
-  //   let nameElement = $("<h1>" + pokemon.name + "</h1>");
-  //   let pokeImageFront = $("<img class='modal-img");
-  //   let pokeImageBack = $("<img class='modal-img");
-  //   let heightElement = $("<p>" + "height : " + pokemon.height + "</p>");
-  //   let weightElement = $("<p>" + "weight : " + pokemon.weight + "</p>");
-  //   let typeElement = $("<p>" + "type : " + pokemon.type + "</p>");
-  //   let abilitiesElement = $("<p>" + "abilities : " + pokemon.abilities + "</p>")
- 
-  //   modalTitle.append(nameElement);
-  //   modalBody.append(pokeImageFront);
-  //   modalBody.append(pokeImageBack);
-  //   modalBody.append(heightElement);
-  //   modalBody.append(weightElement);
-  //   modalBody.append(typeElement);
-  //   modalBody.append(abilitiesElement);
-  // }
 
   //this is where you export the functions to access them globally
   return {
