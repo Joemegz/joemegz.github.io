@@ -1,6 +1,10 @@
+
 let pokemonRepository = (function () {
   let pokemonList = [];
   let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
+  let modalContainer = document.querySelector('#modal-container');
+
+
 
   //this function is the promise function, fetches the apiUrl and the response is converted to json then run a forEach loop for the json result which is the entire api
     function loadList () {
@@ -21,15 +25,19 @@ let pokemonRepository = (function () {
         console.error(e);
       });
     }
+    
+    
     function add(pokemon) {
       pokemonList.push(pokemon);
     }
-    function getAll() {
-      return pokemonList; 
+    function getAll() {//added getAll function to get all pokemon
+      return pokemonList;//return function takes pokemon from the array 
     }
-    // DOM methodology; javascript code
-    function addListItem(pokemon){
-      let pokemonList = document.querySelector(".pokemon-list"); //use the . to select a class from the html
+   
+   
+  
+    function addListItem(pokemon) {//function addListItem is used for DOM 
+      let pokemonList = document.querySelector(".pokemon-list"); //.pokemon-list is ul in index
       let listItem = document.createElement('li'); // created li element
       let button = document.createElement("button"); //created button element or tag, but need to render it in
       
@@ -59,13 +67,12 @@ let pokemonRepository = (function () {
       return response.json();
     })
     .then(function (details) {
-      //code below adds the details to the item
-      item.imageUrlFront = details.sprites.front_default;
-      item.imageUrlBack = details.sprites.back_default;
-      item.height = details.height;
-      item.weight = details.weight;
-      item.types = details.types;
-      item.abilities = details.abilities;
+      item.imageUrlFront = details.sprites.front_default;//adds details to the item
+      item.imageUrlBack = details.sprites.back_default;//adds details to the item
+      item.height = details.height;//adds details to the item
+      item.weight = details.weight;//adds details to the item
+      item.types = details.types;//adds details to the item
+      item.abilities = details.abilities;//adds details to the item
     })
     .catch(function (e) {
       console.error(e);
@@ -74,12 +81,12 @@ let pokemonRepository = (function () {
 
   //this is where you export the functions to access them globally
   return {
-   add: add,
-    getAll: getAll,
-    addListItem: addListItem,
-    loadList: loadList,
-    loadDetails: loadDetails,
-    showDetails: showDetails
+   add: add,//calling add function
+    getAll: getAll,//calling getAll function
+    addListItem: addListItem,//calling addListItem function
+    loadList: loadList,//calling loadList function
+    loadDetails: loadDetails,//calling loadDetails function
+    showDetails: showDetails//calling showDetails function
   };
 })();
   pokemonRepository.loadList().then(function() {
@@ -88,65 +95,41 @@ let pokemonRepository = (function () {
   });
 });
 
-//creates a function to show the modal only if it has the 'is-visible' class
-function showModal(title) { //enable specifying a title and content for the 'showModal' function
-  let modalContainer = document.querySelector('#modal-container');
-console.log(title)
-  //clears all existing modal content
-  modalContainer.innerHTML = '';
-  let modal = document.createElement('div');
-  modal.classList.add('modal');
- 
-  //adds new modal content
-  //for the close button
-  let closeButtonElement = document.createElement('button');
-  closeButtonElement.classList.add('modal-close');
-  closeButtonElement.innerText = 'Close';
-  closeButtonElement.addEventListener('click', hideModal);
+//      <!---------------------------------------------- Modal --------------------------------------------------------->
 
-  let titleElement = document.createElement('h1');
-  titleElement.innerText = title.name; 
-
-  let contentElement = document.createElement('p');
-  contentElement.innerText += " Height: " + title.height ;
-
-  let abilitiesElement = document.createElement('p');
-  abilitiesElement.innerText += "Abilities: ";
+function showModal(item) {
+  let modalBody = $('.modal-body');
+  let modalTitle = $('.modal-title');
+  let modalHeader = $('.modal-header');
   
-  for (let i = 0; i<title.abilities.length; i ++) {
-    abilitiesElement.innerText += " " + title.abilities[i].ability.name 
+  modalTitle.empty();//clears existing content of the model
+  modalBody.empty();//clears existing content of the modal
+
+  let nameElement = $("<h1>" + item.name + "</h1>"); //creating element for name in modal content
+  
+  let imageElementFront = $('<img class="modal-img" style="width:50%">'); //creating img front in modal content
+  imageElementFront.attr("src", item.imageUrlFront);
+  
+  let imageElementBack = $('<img class="modal-img" style="width:50%">');//creating img back in modal content
+  imageElementBack = $("src", item.imageElementBack);
+
+  let heightElement = $("<p>" + "height : " + item.height + "</p>");//creating element for height in modal content
+  let weightElement = $("<p>" + "weight : " + item.weight + "</p>");//creating element for weight in modal content
+  let typesElement = $("<p>" + "types : " + item.types + "</p>");//creating element for types in modal content
+  let abilitiesElement = $("<p>" + "abilities : " + item.abilities + "</p>");//creating element for abilities in modal content
+
+
+  modalTitle.append(nameElement);//appends the name element to the modal title
+  modalBody.append(imageElementFront);//appends front img to the modal body
+  modalBody.append(imageElementBack);//appends back img to the modal body
+  modalBody.append(heightElement);//appends height to the modal body
+  modalBody.append(weightElement);//appends weight to the modal body
+  modalBody.append(typesElement);//appends types to the modal body
+  modalBody.append(abilitiesElement);//appends abilities to the modal body
   }
 
-  let typesElement = document.createElement('p');
-  typesElement.innerText += "Types: ";
 
-  for (let i = 0; i<title.types.length; i ++) {
-    typesElement.innerText += " " + title.types[i].type.name 
-  }
-
-  let weightElement = document.createElement('P');
-  weightElement.innerText += "Weight: " + title.weight;
-
-
-
-  let imgElement = document.createElement('img');
-  imgElement.src = title.imageUrlFront;
-
-  modal.appendChild(closeButtonElement);
-  modal.appendChild(titleElement);
-  modal.appendChild(imgElement); 
-  modal.appendChild(contentElement);
-  modal.appendChild(weightElement);
-  modal.appendChild(abilitiesElement);
-  modal.appendChild(typesElement);
-  modalContainer.appendChild(modal);
-  
-  modalContainer.classList.add('is-visible');
-  
-}
-  let dialogPromiseReject; // this can be set later, by show dialog
-
-//a way to close the modal via close button, esc-key, and clicking outside the modal
+  //a way to close the modal via close button, esc-key, and clicking outside the modal
   function hideModal() {
     let modalContainer = document.querySelector('#modal-container');
     modalContainer.classList.remove('is-visible');
