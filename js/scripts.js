@@ -34,8 +34,7 @@ let pokemonRepository = (function () {
       return pokemonList;//return function takes pokemon from the array 
     }
    
-   
-  
+
     function addListItem(pokemon) {//function addListItem is used for DOM 
       let pokemonList = document.querySelector(".pokemon-list"); //.pokemon-list is ul in index
       let listItem = document.createElement('li'); // created li element
@@ -43,6 +42,10 @@ let pokemonRepository = (function () {
       
       button.innerText = pokemon.name;
       button.classList.add("button-class"); //pulls the css properties from the class "button-class"
+      button.classList.add("btn");
+      button.classList.add("btn-primary");
+      button.setAttribute("data-toggle", "modal");
+      button.setAttribute("data-target", "#exampleModal");
 
       listItem.appendChild(button); //appended the button into li, nests the button as a child into the li
       pokemonList.appendChild(listItem); //appended the li into the ul, which is the parent
@@ -71,7 +74,7 @@ let pokemonRepository = (function () {
       item.imageUrlBack = details.sprites.back_default;//adds details to the item
       item.height = details.height;//adds details to the item
       item.weight = details.weight;//adds details to the item
-      item.types = details.types;//adds details to the item
+      item.types = [...details.types];//adds details to the item
       item.abilities = details.abilities;//adds details to the item
     })
     .catch(function (e) {
@@ -110,13 +113,23 @@ function showModal(item) {
   let imageElementFront = $('<img class="modal-img" style="width:50%">'); //creating img front in modal content
   imageElementFront.attr("src", item.imageUrlFront);
   
-  let imageElementBack = $('<img class="modal-img" style="width:50%">');//creating img back in modal content
-  imageElementBack = $("src", item.imageElementBack);
+  let imageElementBack = $('<img class="" style="width:50%">');//creating img back in modal content
+  imageElementBack.attr("src", item.imageUrlBack);
+
+  let t = "";
+  for (let i = 0; i < item.types.length; i++){
+    t +=  item.types[i].type.name + " ";
+  }
+
+  let a = "";
+  for (let i = 0; i < item.abilities.length; i++){
+    a +=  item.abilities[i].ability.name + " ";
+  }
 
   let heightElement = $("<p>" + "height : " + item.height + "</p>");//creating element for height in modal content
   let weightElement = $("<p>" + "weight : " + item.weight + "</p>");//creating element for weight in modal content
-  let typesElement = $("<p>" + "types : " + item.types + "</p>");//creating element for types in modal content
-  let abilitiesElement = $("<p>" + "abilities : " + item.abilities + "</p>");//creating element for abilities in modal content
+  let typesElement = $("<p>" + "types : " + t + "</p>");//creating element for types in modal content
+  let abilitiesElement = $("<p>" + "abilities : " + a + "</p>");//creating element for abilities in modal content
 
 
   modalTitle.append(nameElement);//appends the name element to the modal title
